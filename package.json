@@ -1,5 +1,8 @@
 {
   "name": "my-downloads",
+  "bin": {
+    "count": "./src/index.js"
+  },
   "version": "0.1.0",
   "description": "Download counts for all packages by author",
   "keywords": [

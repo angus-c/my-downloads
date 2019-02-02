@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const packages = [
   'just-diff',
   'just-diff-apply',

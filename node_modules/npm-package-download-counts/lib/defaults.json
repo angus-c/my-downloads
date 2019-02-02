@@ -1,0 +1,7 @@
+{
+	"packages": [],
+	"period": "last-month",
+	"protocol": "https",
+	"hostname": "api.npmjs.org",
+	"port": null
+}

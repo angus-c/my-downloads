@@ -1,0 +1,22 @@
+{
+  "name": "my-downloads",
+  "version": "0.1.0",
+  "description": "Download counts for all packages by author",
+  "keywords": [
+    "downloads",
+    "yarn",
+    "npm",
+    "node"
+  ],
+  "author": "angus croll",
+  "license": "MIT",
+  "main": "src/index.js",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "npm-package-download-counts": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "count": "node src/index.js"
+  }
+}

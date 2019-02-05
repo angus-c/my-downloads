@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const packages = [
+const packageList = [
   'just-diff',
   'just-diff-apply',
   'just-compare',
@@ -62,72 +62,89 @@ const packages = [
   'just-once'
 ];
 
-const util = require('util');
-const npdc = require('npm-package-download-counts');
-const counts = util.promisify(npdc);
-const cTable = require('console.table');
-
-const opts = { packages, period: '2019-01-25:2019-01-31' };
-
-const today = new Date();
-const thisWeekStart = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 6
-);
-
-const lastWeekEnd = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 7
-);
-const lastWeekStart = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() - 13
-);
-
-Promise.all([
-  counts({
-    packages,
-    period: `${formatDate(thisWeekStart)}:${formatDate(today)}`
-  }),
-  counts({
-    packages,
-    period: `${formatDate(lastWeekStart)}:${formatDate(lastWeekEnd)}`
-  })
-])
-  .then(values => {
-    // make two dictionaries of pkg->downloads
-    // one for this week, one for the week before
-    const dicts = values.map(value => {
-      return value.reduce((obj, { package, data }) => {
-        obj[package] = data.reduce((total, day) => {
-          return total + day[1];
-        }, 0);
-        return obj;
-      }, {});
-    });
-    // smush them together into an array of objects
-    return Object.keys(dicts[0]).map(pkg => {
-      const thisWeekDownloads = dicts[0][pkg];
-      const lastWeekDownloads = dicts[1][pkg];
-      const diff = thisWeekDownloads - lastWeekDownloads;
-      return {
-        pkg,
-        thisWeekDownloads,
-        lastWeekDownloads,
-        diff,
-        percentIncrease: Math.round(100 * (diff / lastWeekDownloads))
-      };
-    });
-  })
-  .then(result => {
-    console.table(
-      result.sort((a, b) =>
-        a.thisWeekDownloads > b.thisWeekDownloads ? -1 : 1
-      )
+const author = process.argv.slice(2)[0];
+const url = `https://registry.npmjs.org/-/v1/search?text=author:${author}`;
+require('node-fetch')(url)
+  .then(raw => raw.json())
+  .then(res => res.objects.map(obj => obj.package.name))
+  .then(packages => {
+    const counts = require('util').promisify(
+      require('npm-package-download-counts')
     );
+    const cTable = require('console.table');
+
+    const today = new Date();
+    const thisWeekStart = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 6
+    );
+
+    const lastWeekEnd = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+    const lastWeekStart = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 13
+    );
+
+    Promise.all([
+      counts({
+        packages,
+        period: `${formatDate(thisWeekStart)}:${formatDate(today)}`
+      }),
+      counts({
+        packages,
+        period: `${formatDate(lastWeekStart)}:${formatDate(lastWeekEnd)}`
+      })
+    ])
+      .then(values => {
+        // make two dictionaries of pkg->downloads
+        // one for this week, one for the week before
+        const dicts = values.map(value => {
+          return value.reduce((obj, { package, data }) => {
+            obj[package] = data.reduce((total, day) => {
+              return total + day[1];
+            }, 0);
+            return obj;
+          }, {});
+        });
+        // smush them together into an array of objects
+        let thisWeekTotal = (lastWeekTotal = 0);
+        const result = Object.keys(dicts[0]).map(pkg => {
+          const thisWeek = dicts[0][pkg];
+          const lastWeek = dicts[1][pkg];
+          thisWeekTotal += thisWeek;
+          lastWeekTotal += lastWeek;
+          const diff = thisWeek - lastWeek;
+          return {
+            pkg,
+            thisWeek,
+            lastWeek,
+            diff,
+            'diff%': Math.round(100 * (diff / lastWeek))
+          };
+        });
+        const totalDiff = thisWeekTotal - lastWeekTotal;
+        const totals = {
+          pkg: 'TOTAL',
+          thisWeek: thisWeekTotal,
+          lastWeek: lastWeekTotal,
+          diff: totalDiff,
+          'diff%': Math.round(100 * (totalDiff / lastWeekTotal))
+        };
+        return [result, totals];
+      })
+      .then(([result, totals]) => {
+        console.table(
+          result
+            .sort((a, b) => (a.thisWeek > b.thisWeek ? -1 : 1))
+            .concat([{ pkg: '================' }, totals])
+        );
+      });
   });
 
 function formatDate(date) {

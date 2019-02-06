@@ -62,8 +62,11 @@ const packageList = [
   'just-once'
 ];
 
+// https://api.npmjs.org/downloads/range/2015-11-01:2015-12-31/just-extend,just-clone
+
 const author = process.argv.slice(2)[0];
-const url = `https://registry.npmjs.org/-/v1/search?text=author:${author}`;
+// const url = `https://registry.npmjs.org/-/v1/search?text=author:${author}&size=60`;
+const url = `https://registry.npmjs.org/-/v1/search?text=keywords:just&size=60`;
 require('node-fetch')(url)
   .then(raw => raw.json())
   .then(res => res.objects.map(obj => obj.package.name))

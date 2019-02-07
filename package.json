@@ -16,8 +16,12 @@
   "main": "src/index.js",
   "dependencies": {
     "console.table": "^0.10.0",
+<<<<<<< HEAD
     "node-fetch": "^2.3.0",
     "npm-package-download-counts": "^1.0.2"
+=======
+    "node-fetch": "^2.3.0"
+>>>>>>> 953e801e84e4ebf9269221b05bdc6bc543dbda8b
   },
   "devDependencies": {},
   "scripts": {

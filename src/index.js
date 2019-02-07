@@ -1,98 +1,31 @@
 #!/usr/bin/env node
 
-const packageList = [
-  'just-diff',
-  'just-diff-apply',
-  'just-compare',
-  'just-pluck-it',
-  'just-clone',
-  'just-flush',
-  'just-extend',
-  'just-merge',
-  'just-values',
-  'just-entries',
-  'just-pick',
-  'just-omit',
-  'just-filter-object',
-  'just-map-object',
-  'just-reduce-object',
-  'just-is-empty',
-  'just-is-circular',
-  'just-is-primitive',
-  'just-safe-get',
-  'just-safe-set',
-  'just-typeof',
-  'just-flip-object',
-  'just-unique',
-  'just-flatten-it',
-  'just-index',
-  'just-insert',
-  'just-intersect',
-  'just-compact',
-  'just-last',
-  'just-tail',
-  'just-random',
-  'just-shuffle',
-  'just-split',
-  'just-split-at',
-  'just-partition',
-  'just-range',
-  'just-remove',
-  'just-union',
-  'just-zip-it',
-  'just-template',
-  'just-truncate',
-  'just-prune',
-  'just-squash',
-  'just-left-pad',
-  'just-right-pad',
-  'just-camel-case',
-  'just-kebab-case',
-  'just-snake-case',
-  'just-pascal-case',
-  'just-clamp',
-  'just-modulo',
-  'just-compose',
-  'just-curry-it',
-  'just-demethodize',
-  'just-flip',
-  'just-partial-it',
-  'just-debounce-it',
-  'just-throttle',
-  'just-once'
-];
-
 // https://api.npmjs.org/downloads/range/2015-11-01:2015-12-31/just-extend,just-clone
 
-const author = process.argv.slice(2)[0];
-// const url = `https://registry.npmjs.org/-/v1/search?text=author:${author}&size=60`;
-const url = `https://registry.npmjs.org/-/v1/search?text=keywords:just&size=60`;
+const cTable = require('console.table');
+
+const npmRegistryAddress = 'https://registry.npmjs.org/-/v1/';
+const npmDownloadsAddress = 'https://api.npmjs.org/downloads/range/';
+
+const searchMask = process.argv.slice(2)[0];
+const url = `${npmRegistryAddress}search?text=${searchMask}&size=60`;
+
 require('node-fetch')(url)
   .then(raw => raw.json())
   .then(res => res.objects.map(obj => obj.package.name))
   .then(packages => {
+    if (!packages || !packages.length) {
+      reportNoMatches(searchMask);
+      return false;
+    }
     const counts = require('util').promisify(
       require('npm-package-download-counts')
     );
-    const cTable = require('console.table');
 
     const today = new Date();
-    const thisWeekStart = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() - 6
-    );
-
-    const lastWeekEnd = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() - 7
-    );
-    const lastWeekStart = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() - 13
-    );
+    const thisWeekStart = getDaysFromToday(6);
+    const lastWeekEnd = getDaysFromToday(7);
+    const lastWeekStart = getDaysFromToday(13);
 
     Promise.all([
       counts({
@@ -149,6 +82,25 @@ require('node-fetch')(url)
         );
       });
   });
+
+function getDaysFromToday(numberOfDays) {
+  const today = new Date();
+  return new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - numberOfDays
+  );
+}
+
+function reportNoMatches(searchMask) {
+  console.log(`Sorry, no matches for "${searchMask}".`);
+  if (searchMask.indexOf('-') > -1 && searchMask.indexOf('maintainer') == -1) {
+    console.log(
+      `Try "maintainer:${searchMask.slice(searchMask.indexOf(':') + 1)}"`
+    );
+  }
+  console.log(); // closing line space
+}
 
 function formatDate(date) {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;

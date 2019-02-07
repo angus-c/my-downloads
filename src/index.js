@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
-// https://api.npmjs.org/downloads/range/2015-11-01:2015-12-31/just-extend,just-clone
-
+const fetch = require('node-fetch');
 const cTable = require('console.table');
 
 const npmRegistryAddress = 'https://registry.npmjs.org/-/v1/';
 const npmDownloadsAddress = 'https://api.npmjs.org/downloads/range/';
 
 const searchMask = process.argv.slice(2)[0];
-const url = `${npmRegistryAddress}search?text=${searchMask}&size=60`;
+const searchURL = `${npmRegistryAddress}search?text=${searchMask}&size=60`;
 
-require('node-fetch')(url)
+fetch(searchURL)
   .then(raw => raw.json())
   .then(res => res.objects.map(obj => obj.package.name))
   .then(packages => {
@@ -27,24 +26,36 @@ require('node-fetch')(url)
     const lastWeekEnd = getDaysFromToday(7);
     const lastWeekStart = getDaysFromToday(13);
 
+    console.log(
+      `${npmDownloadsAddress}${formatDate(thisWeekStart)}:${formatDate(
+        today
+      )}/${packages.join(',')}`
+    );
+
     Promise.all([
-      counts({
-        packages,
-        period: `${formatDate(thisWeekStart)}:${formatDate(today)}`
-      }),
-      counts({
-        packages,
-        period: `${formatDate(lastWeekStart)}:${formatDate(lastWeekEnd)}`
-      })
+      fetch(
+        `${npmDownloadsAddress}${formatDate(thisWeekStart)}:${formatDate(
+          today
+        )}/${packages.join(',')}`
+      ),
+      fetch(
+        `${npmDownloadsAddress}${formatDate(lastWeekStart)}:${formatDate(
+          lastWeekEnd
+        )}/${packages.join(',')}`
+      )
     ])
+      .then(responses => Promise.all(responses.map(res => res.json())))
       .then(values => {
         // make two dictionaries of pkg->downloads
         // one for this week, one for the week before
         const dicts = values.map(value => {
-          return value.reduce((obj, { package, data }) => {
-            obj[package] = data.reduce((total, day) => {
-              return total + day[1];
-            }, 0);
+          return Object.keys(value).reduce((obj, package) => {
+            obj[package] = value[package].downloads.reduce(
+              (total, { downloads }) => {
+                return total + downloads;
+              },
+              0
+            );
             return obj;
           }, {});
         });

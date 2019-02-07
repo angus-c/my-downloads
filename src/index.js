@@ -17,20 +17,11 @@ fetch(searchURL)
       reportNoMatches(searchMask);
       return false;
     }
-    const counts = require('util').promisify(
-      require('npm-package-download-counts')
-    );
 
     const today = new Date();
     const thisWeekStart = getDaysFromToday(6);
     const lastWeekEnd = getDaysFromToday(7);
     const lastWeekStart = getDaysFromToday(13);
-
-    console.log(
-      `${npmDownloadsAddress}${formatDate(thisWeekStart)}:${formatDate(
-        today
-      )}/${packages.join(',')}`
-    );
 
     Promise.all([
       fetch(

@@ -40,6 +40,9 @@ fetch(searchURL)
         // make two dictionaries of pkg->downloads
         // one for this week, one for the week before
         const dicts = values.map(value => {
+          if (value.error) {
+            throw new Error(value.error);
+          }
           return Object.keys(value).reduce((obj, package) => {
             obj[package] = value[package].downloads.reduce(
               (total, { downloads }) => {
@@ -82,7 +85,8 @@ fetch(searchURL)
             .sort((a, b) => (a.thisWeek > b.thisWeek ? -1 : 1))
             .concat([{ pkg: '================' }, totals])
         );
-      });
+      })
+      .catch(e => console.log(`Error: ${e.message}`));
   });
 
 function getDaysFromToday(numberOfDays) {
@@ -98,10 +102,11 @@ function reportNoMatches(searchMask) {
   console.log(`Sorry, no matches for "${searchMask}".`);
   if (searchMask.indexOf('-') > -1 && searchMask.indexOf('maintainer') == -1) {
     console.log(
-      `Try "maintainer:${searchMask.slice(searchMask.indexOf(':') + 1)}"`
+      `This may be due to the hyphen. Try "maintainer:${searchMask.slice(
+        searchMask.indexOf(':') + 1
+      )}" instead.`
     );
   }
-  console.log(); // closing line space
 }
 
 function formatDate(date) {

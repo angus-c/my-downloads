@@ -7,24 +7,22 @@ Use as a CLI or an in-program API
 
 ### args
 
-**Required...**
 * `searchMask`\
-See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md\
+See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md \
 e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\ 
 
 **NOTE:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
 
-**Optional...**
-* **--sort** `sort order`\
+* **--sort** `sort order (optional)`\
 Values: `thisWeek` (default), `lastWeek`, `diff` (absolute difference versus last week), `diff%` (percent difference versus last week)
 
-* **--direction** `sort direction`\
-Sort direction. Values: `down` (default) or `up`
+* **--direction** `sort direction (optional)`\
+Values: `down` (default), `up`
 
 
-### globally
+### Globally
 
-#### install
+#### installation
 
 `yarn global add my-downloads` or\
 `npm i -g my-downloads`
@@ -49,9 +47,9 @@ Sort direction. Values: `down` (default) or `up`
 `downloads pie`\
 (list downloads related to pie)
 
-### locally
+### Locally
 
-#### install
+#### installation
 
 `yarn add my-downloads` or\
 `npm i my-downloads`

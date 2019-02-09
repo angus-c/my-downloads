@@ -5,20 +5,22 @@ Use as a CLI or an in-program API
 
 ## CLI
 
+<img src="images/cli-example.png" width="300"/>
+
 ### args
 
-* `searchMask`
+- `searchMask`
 
 values: see https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md \
-e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\ 
+e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\
 
 **NOTE:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
 
-* **--sort** `sort order (optional)`
+- **--sort** `sort order (optional)`
 
 values: `thisWeek` (default), `lastWeek`, `diff` (absolute difference versus last week), `diff%` (percent difference versus last week)
 
-* **--direction** `sort direction (optional)`
+- **--direction** `sort direction (optional)`
 
 values: `down` (default), `up`
 
@@ -71,9 +73,3 @@ import downloads from 'my-downloads'
 // returns {totals, details}
 downloads('author:jed', 'diff%', 'up');\
 ```
-
-
-
-
-
-

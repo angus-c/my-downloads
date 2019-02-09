@@ -64,21 +64,23 @@ module.exports = function({ searchMask, sortBy, direction }) {
               thisWeekTotal += thisWeek;
               lastWeekTotal += lastWeek;
               const diff = thisWeek - lastWeek;
+              const diffpc = Math.round(100 * (diff / lastWeek));
               return {
                 pkg,
                 thisWeek,
                 lastWeek,
                 diff,
-                'diff%': Math.round(100 * (diff / lastWeek))
+                'diff%': `${diffpc > 0 ? '+' : ''}${diffpc}`
               };
             });
             const totalDiff = thisWeekTotal - lastWeekTotal;
+            const totalDiffpc = Math.round(100 * (totalDiff / lastWeekTotal));
             const totals = {
               pkg: 'TOTAL',
               thisWeek: thisWeekTotal,
               lastWeek: lastWeekTotal,
               diff: totalDiff,
-              'diff%': Math.round(100 * (totalDiff / lastWeekTotal))
+              'diff%': `${totalDiffpc > 0 ? '+' : ''}${totalDiffpc}`
             };
             return [result, totals];
           })

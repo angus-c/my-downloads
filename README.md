@@ -5,7 +5,7 @@ Use as a CLI or an in-program API
 
 ## CLI
 
-<img src="images/cli-example.png" width="300"/>
+<img src="images/cli-example.png" width="500"/>
 
 ### args
 
@@ -73,3 +73,11 @@ import downloads from 'my-downloads'
 // returns {totals, details}
 downloads('author:jed', 'diff%', 'up');\
 ```
+
+#### return values
+
+`totals`: the totals for all listed packages\
+object with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number), `diff` (number), `diff%` (number).
+
+`details`: the details for all listed packages\
+array of objects with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number), `diff` (number), `diff%` (number).

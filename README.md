@@ -7,16 +7,18 @@ Use as a CLI or an in-program API
 
 ### args
 
-**(default)** `searchMask`\
+**Required:**
+* **(unnamed)** `searchMask`\
 See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md\
 e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\ 
 
 **NOTE:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
 
-**--sort**\
+**Optional:**
+* **--sort**\
 Values: `thisWeek` (default), `lastWeek`, `diff` (absolute difference versus last week), `diff%` (percent difference versus last week)
 
-**--direction**\
+* **--direction**\
 Sort direction. Values: `down` (default) or `up`
 
 

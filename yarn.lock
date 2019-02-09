@@ -28,6 +28,10 @@ just-reduce-object@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/just-reduce-object/-/just-reduce-object-1.1.0.tgz#d29d172264f8511c74462de30d72d5838b6967e6"
 
+minimist@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+
 node-fetch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"

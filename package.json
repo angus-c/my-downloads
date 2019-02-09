@@ -1,7 +1,7 @@
 {
   "name": "my-downloads",
   "bin": {
-    "count": "./src/index.js"
+    "downloads": "./src/index.js"
   },
   "version": "0.2.2",
   "description": "Download counts for all packages by author",
@@ -17,10 +17,11 @@
   "dependencies": {
     "console.table": "^0.10.0",
     "just-reduce-object": "^1.1.0",
+    "minimist": "^1.2.0",
     "node-fetch": "^2.3.0"
   },
   "devDependencies": {},
   "scripts": {
-    "count": "node src/index.js"
+    "downloads": "node src/index.js"
   }
 }

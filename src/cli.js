@@ -12,14 +12,3 @@ api({ searchMask, sortBy: args.sort, direction: args.direction })
     console.table(details.concat([{ pkg: '================' }, totals]));
   })
   .catch(e => console.log(e.message));
-
-function reportNoMatches(searchMask) {
-  console.log(`Sorry, no matches for "${searchMask}".`);
-  if (searchMask.indexOf('-') > -1 && searchMask.indexOf('maintainer') == -1) {
-    console.log(
-      `This may be due to the hyphen. Try "maintainer:${searchMask.slice(
-        searchMask.indexOf(':') + 1
-      )}" instead.`
-    );
-  }
-}

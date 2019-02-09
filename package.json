@@ -3,7 +3,7 @@
   "bin": {
     "downloads": "./src/cli.js"
   },
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "Download counts for all packages by author",
   "keywords": [
     "downloads",

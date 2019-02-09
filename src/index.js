@@ -2,6 +2,7 @@
 
 const fetch = require('node-fetch');
 const cTable = require('console.table');
+const reduceObject = require('just-reduce-object');
 
 const npmRegistryAddress = 'https://registry.npmjs.org/-/v1/';
 const npmDownloadsAddress = 'https://api.npmjs.org/downloads/range/';
@@ -47,18 +48,22 @@ fetch(searchURL)
           if (value.error) {
             throw new Error(value.error);
           }
-          return Object.keys(value)
-            .filter(package => value[package])
-            .reduce((obj, package) => {
-              value[package].downloads &&
-                (obj[package] = value[package].downloads.reduce(
+
+          return reduceObject(
+            value,
+            (obj, package, details) => {
+              details &&
+                details.downloads &&
+                (obj[package] = details.downloads.reduce(
                   (total, { downloads }) => {
                     return total + downloads;
                   },
                   0
                 ));
               return obj;
-            }, {});
+            },
+            {}
+          );
         });
         // smush them together into an array of objects
         let thisWeekTotal = (lastWeekTotal = 0);

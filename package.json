@@ -16,6 +16,7 @@
   "main": "src/index.js",
   "dependencies": {
     "console.table": "^0.10.0",
+    "just-reduce-object": "^1.1.0",
     "node-fetch": "^2.3.0"
   },
   "devDependencies": {},

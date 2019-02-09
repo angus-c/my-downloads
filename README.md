@@ -7,8 +7,8 @@ Use as a CLI or an in-program API
 
 ### args
 
-**required:** `searchMask`\
-See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md
+**(default)** `searchMask`\
+See https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md\
 e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\ 
 
 **NOTE:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.

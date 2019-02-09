@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
+const minimist = require('minimist');
 const fetch = require('node-fetch');
 const cTable = require('console.table');
 const reduceObject = require('just-reduce-object');
 
-const npmRegistryAddress = 'https://registry.npmjs.org/-/v1/';
-const npmDownloadsAddress = 'https://api.npmjs.org/downloads/range/';
+const registryAPI = 'https://registry.npmjs.org/-/v1/';
+const downloadsAPI = 'https://api.npmjs.org/downloads/range/';
 
-const searchMask = process.argv.slice(2)[0];
-const searchURL = `${npmRegistryAddress}search?text=${searchMask}&size=60`;
+const args = minimist(process.argv.slice(2));
+const searchMask = args['_'][0];
+const searchURL = `${registryAPI}search?text=${searchMask}&size=60`;
 
 fetch(searchURL)
   .then(raw => raw.json())
@@ -17,28 +19,20 @@ fetch(searchURL)
       .map(obj => obj.package.name)
       .filter(name => name.indexOf('@') === -1)
   )
-  .then(packages => {
-    if (!packages || !packages.length) {
+  .then(pkgs => {
+    if (!pkgs || !pkgs.length) {
       reportNoMatches(searchMask);
       return false;
     }
 
-    const today = new Date();
-    const thisWeekStart = getDaysFromToday(6);
-    const lastWeekEnd = getDaysFromToday(7);
-    const lastWeekStart = getDaysFromToday(13);
+    const today = formatDate(new Date());
+    const thisWeekStart = formatDate(getDaysFromToday(6));
+    const lastWeekEnd = formatDate(getDaysFromToday(7));
+    const lastWeekStart = formatDate(getDaysFromToday(13));
 
     Promise.all([
-      fetch(
-        `${npmDownloadsAddress}${formatDate(thisWeekStart)}:${formatDate(
-          today
-        )}/${packages.join(',')}`
-      ),
-      fetch(
-        `${npmDownloadsAddress}${formatDate(lastWeekStart)}:${formatDate(
-          lastWeekEnd
-        )}/${packages.join(',')}`
-      )
+      fetch(`${downloadsAPI}${thisWeekStart}:${today}/${pkgs.join(',')}`),
+      fetch(`${downloadsAPI}${lastWeekStart}:${lastWeekEnd}/${pkgs.join(',')}`)
     ])
       .then(responses => Promise.all(responses.map(res => res.json())))
       .then(values => {
@@ -48,7 +42,6 @@ fetch(searchURL)
           if (value.error) {
             throw new Error(value.error);
           }
-
           return reduceObject(
             value,
             (obj, package, details) => {
@@ -94,7 +87,7 @@ fetch(searchURL)
       .then(([result, totals]) => {
         console.table(
           result
-            .sort((a, b) => (a.thisWeek > b.thisWeek ? -1 : 1))
+            .sort(getSortFunction(args.sort, args.direction))
             .concat([{ pkg: '================' }, totals])
         );
       })
@@ -119,6 +112,12 @@ function reportNoMatches(searchMask) {
       )}" instead.`
     );
   }
+}
+
+function getSortFunction(sortBy = 'thisWeek', direction = 'down') {
+  return direction == 'up'
+    ? (a, b) => (a[sortBy] > b[sortBy] ? 1 : -1)
+    : (a, b) => (a[sortBy] > b[sortBy] ? -1 : 1);
 }
 
 function formatDate(date) {

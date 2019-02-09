@@ -1,7 +1,7 @@
 {
   "name": "my-downloads",
   "bin": {
-    "downloads": "./src/index.js"
+    "downloads": "./src/cli.js"
   },
   "version": "0.2.2",
   "description": "Download counts for all packages by author",
@@ -13,7 +13,7 @@
   ],
   "author": "angus croll",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/api.js",
   "dependencies": {
     "console.table": "^0.10.0",
     "just-reduce-object": "^1.1.0",
@@ -22,6 +22,6 @@
   },
   "devDependencies": {},
   "scripts": {
-    "downloads": "node src/index.js"
+    "downloads": "node src/cli.js"
   }
 }

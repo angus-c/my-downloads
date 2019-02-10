@@ -83,5 +83,5 @@ array of objects with properties `pkg` (string), `thisWeek` (number), `lastWeek`
 ### Known Issues
 
 * **Hyphenated author names:** The npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
-* **Scoped packages:**The npm registry cannot currently provide download data for scoped packages. Consequently I'm filtering scoped packages from search results.
+* **Scoped packages:** The npm registry cannot currently provide download data for scoped packages. Consequently I'm filtering scoped packages from search results.
 

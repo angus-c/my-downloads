@@ -65,9 +65,8 @@ etc.\
 
 ## API
 
-import downloads from 'my-downloads'
-
 ```js
+import downloads from 'my-downloads';
 downloads('author:jed', 'diff%', 'up').then({totals, details} => /* your code here */);
 ```
 

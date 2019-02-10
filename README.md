@@ -1,6 +1,6 @@
 # my-downloads
 
-List download totals and trend for npm packages based on author, maintainer or keyword.\
+List download totals and trends for npm packages based on author or keyword.\
 Use as a CLI or an in-program API
 
 ## CLI
@@ -14,7 +14,7 @@ Use as a CLI or an in-program API
 values: see https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md \
 e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\
 
-**NOTE:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
+**Note:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
 
 - **--sort** `sort order (optional)`
 

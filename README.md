@@ -1,4 +1,4 @@
-# my-downloads
+# My Downloads
 
 List download totals and trends for npm packages based on author or keyword.\
 Use as a CLI or an in-program API
@@ -63,7 +63,7 @@ values: `down` (default), `up`
 
 etc.\
 
-### API
+## API
 
 import downloads from 'my-downloads'
 
@@ -72,7 +72,7 @@ import downloads from 'my-downloads'
 downloads('author:jed', 'diff%', 'up');
 ```
 
-#### return values
+### return values
 
 `totals`: the totals for all listed packages\
 object with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number), `diff` (number), `diff%` (number).
@@ -80,7 +80,7 @@ object with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number),
 `details`: the details for all listed packages\
 array of objects with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number), `diff` (number), `diff%` (number).
 
-### Known Issues
+## Known Issues
 
 * **Hyphenated author names:** The npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
 * **Scoped packages:** The npm registry cannot currently provide download data for scoped packages. Consequently I'm filtering scoped packages from search results.

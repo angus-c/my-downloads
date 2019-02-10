@@ -68,8 +68,7 @@ etc.\
 import downloads from 'my-downloads'
 
 ```js
-// returns {totals, details}
-downloads('author:jed', 'diff%', 'up');
+downloads('author:jed', 'diff%', 'up').then({totals, details} => /* your code here */);
 ```
 
 ### return values

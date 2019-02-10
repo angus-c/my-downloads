@@ -29,7 +29,7 @@ values: `down` (default), `up`
 `yarn global add my-downloads` or\
 `npm i -g my-downloads`
 
-#### usage
+#### usage examples
 
 `downloads author:jed`\
 (list downloads for packages authored by @jed, default sort is by this week's downloads)
@@ -56,7 +56,7 @@ values: `down` (default), `up`
 `yarn add my-downloads` or\
 `npm i my-downloads`
 
-#### usage
+#### usage example
 
 `yarn downloads author:jed` or\
 `npm downloads author:jed`

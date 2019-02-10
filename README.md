@@ -14,8 +14,6 @@ Use as a CLI or an in-program API
 values: see https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md \
 e.g. `author:<name>`, `maintainer:<name>`, `keywords:<keyword>`, `<generic search term>`\
 
-**Note:** the npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
-
 - **--sort** `sort order (optional)`
 
 values: `thisWeek` (default), `lastWeek`, `diff` (absolute difference versus last week), `diff%` (percent difference versus last week)
@@ -81,3 +79,9 @@ object with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number),
 
 `details`: the details for all listed packages\
 array of objects with properties `pkg` (string), `thisWeek` (number), `lastWeek` (number), `diff` (number), `diff%` (number).
+
+### Known Issues
+
+* **Hyphenated author names:** The npm registry API doesn't currently process hyphenated author names, so if you're searching for an author with a hyphenated name you'll need to use `maintainer:` instead.
+* **Scoped packages:**The npm registry cannot currently provide download data for scoped packages. Consequently I'm filtering scoped packages from search results.
+

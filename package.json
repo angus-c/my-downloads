@@ -7,7 +7,7 @@
   "description": "Download counts for all packages by author",
   "keywords": [
     "downloads",
-    "registry"
+    "registry",
     "yarn",
     "npm",
     "node"

@@ -64,12 +64,13 @@ module.exports = function({ searchMask, sortBy, direction }) {
               thisWeekTotal += thisWeek;
               lastWeekTotal += lastWeek;
               const diff = thisWeek - lastWeek;
+              const diffpc = Math.round(100 * (diff / lastWeek));
               return {
                 pkg,
                 thisWeek,
                 lastWeek,
                 diff,
-                'diff%': Math.round(100 * (totalDiff / lastWeekTotal))
+                'diff%': `${diffpc > 0 ? '+' : ''}${diffpc}`
               };
             });
             const totalDiff = thisWeekTotal - lastWeekTotal;

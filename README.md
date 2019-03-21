@@ -34,10 +34,10 @@ values: `down` (default), `up`
 `downloads author:jed`\
 (list downloads for packages authored by @jed, default sort is by this week's downloads)
 
-`downloads author:jed --sort 'diff%'`\
+`downloads author:jed --sort diff%`\
 (sorts by percent change since last week)\
 
-`downloads author:jed --sort 'diff%' --direction 'up'`\
+`downloads author:jed --sort diff% --direction up`\
 (sorts by percent change since last week, ascending)\
 
 `downloads maintainer:angus-c`\
